@@ -1,7 +1,7 @@
 package isdcm.restserver.service;
 
-import isdcm.restserver.domain.ResultActionsCRUD;
 import isdcm.restserver.domain.Video;
+import isdcm.restserver.dto.VideoDTO;
 import isdcm.restserver.repository.VideoRepository;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +15,7 @@ public class VideoServiceImpl implements VideoService {
     public VideoServiceImpl(VideoRepository videoRepository) {this.videoRepository = videoRepository;}
 
     @Override
-    public ResultActionsCRUD updateVideo(Integer id) {
+    public Optional<VideoDTO> updateVideo(Integer id) {
 
         Optional<Video> optionalVideo = videoRepository.findVideoByVideoId(id);
 
@@ -28,18 +28,16 @@ public class VideoServiceImpl implements VideoService {
 
             videoRepository.saveAndFlush(video);
 
-            return ResultActionsCRUD
-                    .builder()
-                    .isOk(true)
-                    .build();
+            return Optional.ofNullable(
+                    VideoDTO.builder()
+                            .id(video.getVideoId())
+                            .reproductions(video.getReproduction())
+                            .build()
+            );
 
         }
 
-        return ResultActionsCRUD
-                .builder()
-                .isOk(false)
-                .missatge("Video not found")
-                .build();
+        return Optional.empty();
 
     }
 }

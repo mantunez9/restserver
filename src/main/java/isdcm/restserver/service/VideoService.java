@@ -1,7 +1,9 @@
 package isdcm.restserver.service;
 
-import isdcm.restserver.domain.ResultActionsCRUD;
+import isdcm.restserver.dto.VideoDTO;
+
+import java.util.Optional;
 
 public interface VideoService {
-    ResultActionsCRUD updateVideo(Integer id);
+    Optional<VideoDTO> updateVideo(Integer id);
 }
